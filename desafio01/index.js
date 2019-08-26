@@ -1,8 +1,15 @@
 const express = require('express')
 const app = express()
 const projects = []
+let numberOfRequests = 0;
 
 app.use(express.json())
+
+app.use((req, res, next) => {
+    numberOfRequests++
+    console.log(numberOfRequests)
+    return next()
+})
 
 app.post('/projects', (req, res) => {
     const project = req.body
@@ -29,7 +36,7 @@ app.put('/projects/:id', (req, res) => {
 app.delete('/projects/:id', (req, res) => {
     const { id } = req.params
     const index = projects.findIndex(p => p.id == id)
-    projects.slice(index, 1)
+    projects.splice(index, 1)
     return res.json(projects)
 })
 
