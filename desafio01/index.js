@@ -24,7 +24,7 @@ app.get('/projects', (req, res) => {
     return res.json(projects)
 })
 
-app.put('/projects/:id', (req, res) => {
+app.put('/projects/:id', checkIfProjectExist, (req, res) => {
     const { id } = req.params
     const { title } = req.body
     const index = projects.findIndex(p => p.id == id)
@@ -33,14 +33,14 @@ app.put('/projects/:id', (req, res) => {
     res.json(project)
 })
 
-app.delete('/projects/:id', (req, res) => {
+app.delete('/projects/:id', checkIfProjectExist, (req, res) => {
     const { id } = req.params
     const index = projects.findIndex(p => p.id == id)
     projects.splice(index, 1)
     return res.json(projects)
 })
 
-app.post('/projects/:id/tasks', (req, res) => {
+app.post('/projects/:id/tasks', checkIfProjectExist, (req, res) => {
     const { id } = req.params
     const { title } = req.body
     const index = projects.findIndex(p => p.id == id)
@@ -48,5 +48,14 @@ app.post('/projects/:id/tasks', (req, res) => {
     project.tasks.push(title)
     return res.json(project)
 })
+
+function checkIfProjectExist(req, res, next) {
+    const { id } = req.params
+    const index = projects.findIndex(p => p.id == id)
+    if (index == -1) {
+        return res.status(400).json({ error: 'Projeto não encontrado.' });
+    }
+    return next()
+}
 
 app.listen(3000)
