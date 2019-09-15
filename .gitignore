@@ -1,3 +1,8 @@
 desafio01/node_modules
 desafio02/node_modules
 desafio02/yarn-error.log
+desafio03/node_modules
+desafio03/tmp/uploads/*
+!desafio03/tmp/uploads/.gitkeep
+!desafio03/env
+desafio03/yarn-error.log
